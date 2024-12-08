@@ -56,7 +56,7 @@ func saveImage(imgData []byte, filename string) error {
 	return nil
 }
 
-func downloadAndSaveImage(fileName, url string) error {
+func downloadAndSaveImage(fileName, url, category string) error {
 	imageURL := url
 	log.Printf("Downloading image %s", fileName)
 
@@ -70,7 +70,13 @@ func downloadAndSaveImage(fileName, url string) error {
 		fileExtension = "jpg" // standardize on ".jpg" for JPEG
 	}
 
-	outputFilename := fmt.Sprintf("export/images/%s.%s", fileName, fileExtension)
+	folderPath := fmt.Sprintf("export/images/%s", category)
+	err = os.MkdirAll(folderPath, os.ModePerm)
+	if err != nil {
+		return fmt.Errorf("issue creating directory: %v", err)
+	}
+
+	outputFilename := fmt.Sprintf("%s/%s.%s", folderPath, fileName, fileExtension)
 	err = saveImage(imgData, outputFilename)
 	if err != nil {
 		return fmt.Errorf("issue: saving image for %s with error: %s", outputFilename, err)

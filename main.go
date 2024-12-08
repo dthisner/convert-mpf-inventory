@@ -15,10 +15,10 @@ var (
 )
 
 func main() {
-	fileName := "misc-4-items"
-	openJsonFileName := fmt.Sprintf("data/mpf/%s.json", fileName)
-	exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", fileName)
-	exportJSONFileName := fmt.Sprintf("export/JSON/%s.json", fileName)
+	category := "misc-4-items"
+	openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
+	exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", category)
+	exportJSONFileName := fmt.Sprintf("export/JSON/%s.json", category)
 
 	MRF := openMRFJson(openJsonFileName)
 	excelExport := generateExportData(MRF)
@@ -35,7 +35,7 @@ func main() {
 
 			for i, image := range s.Images {
 				fileName := fmt.Sprintf("%s_0%d", s.Sku, i)
-				err := downloadAndSaveImage(fileName, image.URL)
+				err := downloadAndSaveImage(fileName, image.URL, category)
 				if err != nil {
 					log.Print(err.Error())
 					s.Images[i].Error = err.Error()
