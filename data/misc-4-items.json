@@ -1,0 +1,260 @@
+{
+  "data": {
+    "query": "",
+    "totalCollections": 0,
+    "collections": null,
+    "totalPages": 0,
+    "pages": null,
+    "suggestions": null,
+    "total": 4,
+    "items": [
+      {
+        "id": 9045032730901,
+        "productType": "",
+        "title": "FISH TRAP - R701 (x4)",
+        "description": "<meta charset=\"utf-8\"><span data-mce-fragment=\"1\">Dimensions: 9\"w x 9</span><span data-mce-fragment=\"1\">\"d x 42\"h</span><br data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">Material: Woven Wood</span>\n<div><span data-mce-fragment=\"1\">Era/ Style: 20th Century<br><br><br></span></div>",
+        "collections": [269251641542, 269251674310, 280637931718, 426703814933],
+        "tags": ["fish trap", "fishing", "hunting"],
+        "urlName": "fish-trap-r701",
+        "vendor": "Mountpleasantfurniture",
+        "date": "2024-03-11T22:39:54.0000000Z",
+        "variants": [
+          {
+            "id": 48065835893013,
+            "sku": "R701",
+            "barcode": null,
+            "available": 4,
+            "price": 20,
+            "weight": 0,
+            "compareAtPrice": 0,
+            "imageIndex": -1,
+            "options": [],
+            "metafields": null,
+            "flags": 0
+          }
+        ],
+        "selectedVariantId": null,
+        "images": [
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/files/IMG_2001.jpg?v=1710196802",
+            "alt": null,
+            "width": 1456,
+            "height": 4014
+          }
+        ],
+        "metafields": [],
+        "options": [],
+        "review": 0,
+        "reviewCount": 0,
+        "extra": null
+      },
+      {
+        "id": 7239369162950,
+        "productType": "",
+        "title": "PLANTER - PL02 (x2)",
+        "description": "<span data-mce-fragment=\"1\">Dimensions: H:19\" W:28\" D:28\" </span><br data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">Colour: White / Cream</span><br data-mce-fragment=\"1\"><span data-mce-fragment=\"1\">Material: Concrete</span>",
+        "collections": [269251641542, 269251674310, 280637931718, 286460575942],
+        "tags": ["concrete", "planter", "snakes"],
+        "urlName": "planter-pl02",
+        "vendor": "Mountpleasantfurniture",
+        "date": "2022-03-25T20:50:39.0000000Z",
+        "variants": [
+          {
+            "id": 41740910428358,
+            "sku": "PL02",
+            "barcode": null,
+            "available": 2,
+            "price": 145,
+            "weight": 0,
+            "compareAtPrice": 0,
+            "imageIndex": -1,
+            "options": [],
+            "metafields": null,
+            "flags": 0
+          }
+        ],
+        "selectedVariantId": null,
+        "images": [
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/IMG_9889.jpg?v=1648241441",
+            "alt": null,
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/IMG_9890.jpg?v=1648241441",
+            "alt": null,
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/IMG_9891.jpg?v=1648241442",
+            "alt": null,
+            "width": 4032,
+            "height": 3024
+          }
+        ],
+        "metafields": [],
+        "options": [],
+        "review": 0,
+        "reviewCount": 0,
+        "extra": null
+      },
+      {
+        "id": 9045036859669,
+        "productType": "",
+        "title": "SPIRIT HOUSE - R705",
+        "description": "<meta charset=\"UTF-8\">\n<div data-mce-fragment=\"1\" class=\"grid__item medium-up--one-half\">\n<div data-mce-fragment=\"1\" class=\"photos\">\n<div data-mce-fragment=\"1\" class=\"photos__item photos__item--main\">\n<p data-mce-fragment=\"1\" class=\"product-single__photo product__photo-container product__photo-container-product-template js\" id=\"ProductPhoto\" data-image-id=\"34292418216134\" style=\"text-align: left;\"><span style=\"font-size: 0.875rem;\">Dimensions: 13\"w x 22\"d x 23\"h <br></span><span style=\"font-size: 0.875rem;\">Material: Wood <br></span><span style=\"font-size: 0.875rem;\">Era/ Style: Early 20th Century</span></p>\n</div>\n</div>\n</div>\n<div data-mce-fragment=\"1\" itemprop=\"offers\" itemscope=\"\" itemtype=\"http://schema.org/Offer\">\n<div data-mce-fragment=\"1\">\n<p style=\"font-weight: 400;\"><br></p>\n</div>\n</div>",
+        "collections": [269251641542, 269251674310, 280637931718, 426703814933],
+        "tags": ["Asian", "bird house", "gold", "spirit house", "temple"],
+        "urlName": "spirit-house-r705",
+        "vendor": "Mountpleasantfurniture",
+        "date": "2024-03-11T22:52:04.0000000Z",
+        "variants": [
+          {
+            "id": 48065844379925,
+            "sku": "R705",
+            "barcode": null,
+            "available": 1,
+            "price": 35,
+            "weight": 0,
+            "compareAtPrice": 0,
+            "imageIndex": -1,
+            "options": [],
+            "metafields": null,
+            "flags": 0
+          }
+        ],
+        "selectedVariantId": null,
+        "images": [
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/files/IMG_2025.jpg?v=1710197559",
+            "alt": null,
+            "width": 3024,
+            "height": 4032
+          }
+        ],
+        "metafields": [],
+        "options": [],
+        "review": 0,
+        "reviewCount": 0,
+        "extra": null
+      },
+      {
+        "id": 6934772940998,
+        "productType": "",
+        "title": "WHEEL - FIRE TRUCK - FTW1 (x4)",
+        "description": "Dimensions: 34\"w x 17\"d x 34\"h<br>Colour: Red<br>Material: Metal",
+        "collections": [269251641542, 269251674310, 280637931718],
+        "tags": ["firetruck", "wheel"],
+        "urlName": "wheel-fire-truck-ftw1",
+        "vendor": "Mountpleasantfurniture",
+        "date": "2021-09-28T21:00:26.0000000Z",
+        "variants": [
+          {
+            "id": 40868938547398,
+            "sku": "FTW1",
+            "barcode": null,
+            "available": 4,
+            "price": 60,
+            "weight": 0,
+            "compareAtPrice": 0,
+            "imageIndex": -1,
+            "options": [],
+            "metafields": null,
+            "flags": 0
+          }
+        ],
+        "selectedVariantId": null,
+        "images": [
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/IMG_9787.jpg?v=1632862828",
+            "alt": null,
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/IMG_9793.jpg?v=1632862828",
+            "alt": null,
+            "width": 3024,
+            "height": 4032
+          }
+        ],
+        "metafields": [],
+        "options": [],
+        "review": 0,
+        "reviewCount": 0,
+        "extra": null
+      }
+    ],
+    "facets": [
+      {
+        "id": 2138582770,
+        "title": "Price",
+        "facetName": "price",
+        "labels": [],
+        "rangeFormat": "{0} - {1}",
+        "multiple": 0,
+        "display": "Range",
+        "maxHeight": "300px",
+        "range": [4, 1],
+        "sliderValueSymbols": "k,M,G,T,P,E",
+        "min": 20,
+        "max": 145,
+        "numericRange": 2
+      },
+      {
+        "id": 1950069828,
+        "title": "Style",
+        "facetName": "collections",
+        "multiple": 1,
+        "display": "List",
+        "sort": 1,
+        "maxHeight": "300px",
+        "labels": [
+          { "label": "Recently Added", "value": 2, "id": 426703814933 },
+          { "label": "Planter", "value": 1, "id": 286460575942 },
+          { "label": "Misc", "value": 4, "id": 280637931718 },
+          { "label": "Newest Products", "value": 4, "id": 269251674310 },
+          { "label": "Best Selling Products", "value": 4, "id": 269251641542 }
+        ]
+      }
+    ],
+    "extra": {
+      "collections": [
+        {
+          "id": 280637931718,
+          "title": "Misc",
+          "urlName": "misc",
+          "description": null,
+          "imageUrl": null,
+          "sortOrder": "BestSelling"
+        },
+        {
+          "id": 426703814933,
+          "title": "Recently Added",
+          "urlName": "recently-added"
+        },
+        { "id": 286460575942, "title": "Planter", "urlName": "planter" },
+        {
+          "id": 269251674310,
+          "title": "Newest Products",
+          "urlName": "newest-products"
+        },
+        {
+          "id": 269251641542,
+          "title": "Best Selling Products",
+          "urlName": "best-selling-products"
+        }
+      ]
+    },
+    "currency": {
+      "format": "${0}",
+      "longFormat": "${0} CAD",
+      "decimalSeparator": ".",
+      "hasDecimals": true,
+      "thousandSeparator": ","
+    },
+    "popularSearch": null
+  }
+}

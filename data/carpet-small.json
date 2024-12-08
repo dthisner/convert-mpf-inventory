@@ -1,0 +1,155 @@
+{
+  "data": {
+    "query": "",
+    "totalCollections": 0,
+    "collections": null,
+    "totalPages": 0,
+    "pages": null,
+    "suggestions": null,
+    "total": 718,
+    "items": [
+      {
+        "id": 6696614920390,
+        "productType": "carpet",
+        "title": "(1) LARGE CARPET - CAR001",
+        "description": "<p>Style: Persian\n<br>Size: 9'8 W x 16'2 L\n<br>Main Colour: Blue/ Purple</p>",
+        "collections": [268574261446, 268734595270, 269251641542, 269251674310],
+        "tags": ["001", "01", "1", "carpet", "largecarpet"],
+        "urlName": "car001",
+        "vendor": "MPF",
+        "date": "2021-05-21T16:23:51.0000000Z",
+        "variants": [
+          {
+            "id": 39884381913286,
+            "sku": "CAR001",
+            "barcode": null,
+            "available": 1,
+            "price": 825,
+            "weight": 0,
+            "compareAtPrice": 0,
+            "imageIndex": -1,
+            "options": [],
+            "metafields": null,
+            "flags": 0
+          }
+        ],
+        "selectedVariantId": null,
+        "images": [
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/88EO9Of.jpg?v=1651597608",
+            "alt": null,
+            "width": 2858,
+            "height": 2142
+          },
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/CAR001DETAIL.jpg?v=1632435025",
+            "alt": null,
+            "width": 3024,
+            "height": 4032
+          }
+        ],
+        "metafields": [
+          {
+            "key": "key",
+            "value": "116",
+            "multiple": false,
+            "valueType": "Text",
+            "namespace": "namespace"
+          },
+          {
+            "key": "key2",
+            "value": "194",
+            "multiple": false,
+            "valueType": "Text",
+            "namespace": "namespace"
+          }
+        ],
+        "options": [],
+        "review": 0,
+        "reviewCount": 0,
+        "extra": null
+      },
+      {
+        "id": 6696615215302,
+        "productType": "carpet",
+        "title": "(1) LARGE CARPET - CAR002",
+        "description": "<p>Style: Persian\n<br>Size: 10' W x 13' L\n<br>Main Colour: Multi</p>",
+        "collections": [268574261446, 268734595270, 269251641542, 269251674310],
+        "tags": ["002", "02", "2", "carpet", "largecarpet"],
+        "urlName": "car002",
+        "vendor": "MPF",
+        "date": "2021-05-21T16:23:59.0000000Z",
+        "variants": [
+          {
+            "id": 39884383322310,
+            "sku": "CAR002",
+            "barcode": null,
+            "available": 1,
+            "price": 690,
+            "weight": 0,
+            "compareAtPrice": 0,
+            "imageIndex": -1,
+            "options": [],
+            "metafields": null,
+            "flags": 0
+          }
+        ],
+        "selectedVariantId": null,
+        "images": [
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/Ukk978v.jpg?v=1627603699",
+            "alt": null,
+            "width": 2421,
+            "height": 2230
+          },
+          {
+            "url": "//cdn.shopify.com/s/files/1/0568/0640/8390/products/CAR002.jpg?v=1632435003",
+            "alt": null,
+            "width": 3024,
+            "height": 4032
+          }
+        ],
+        "metafields": [
+          {
+            "key": "key",
+            "value": "120",
+            "multiple": false,
+            "valueType": "Text",
+            "namespace": "namespace"
+          },
+          {
+            "key": "key2",
+            "value": "156",
+            "multiple": false,
+            "valueType": "Text",
+            "namespace": "namespace"
+          }
+        ],
+        "options": [],
+        "review": 0,
+        "reviewCount": 0,
+        "extra": null
+      }
+    ],
+    "extra": {
+      "collections": [
+        {
+          "id": 268574261446,
+          "title": "All Carpets",
+          "urlName": "all-carpets",
+          "description": null,
+          "imageUrl": null,
+          "sortOrder": "Title"
+        }
+      ]
+    },
+    "currency": {
+      "format": "${0}",
+      "longFormat": "${0} CAD",
+      "decimalSeparator": ".",
+      "hasDecimals": true,
+      "thousandSeparator": ","
+    },
+    "popularSearch": null
+  }
+}
