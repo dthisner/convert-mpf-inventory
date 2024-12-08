@@ -11,7 +11,7 @@ import (
 )
 
 func writeCSVFile(excelExport []Excel, fileName string) {
-	header := []string{"Sku", "Style", "Size", "Color", "Material", "Price", "Inventory", "Tags", "Image1", "Image2", "Image3", "Image4"}
+	header := []string{"Sku", "Style", "Size", "Color", "Material", "Price", "Inventory", "Tags", "Images"}
 
 	file, err := os.Create(fileName)
 	if err != nil {
@@ -28,16 +28,13 @@ func writeCSVFile(excelExport []Excel, fileName string) {
 
 	for _, row := range excelExport {
 		tags := strings.Join(row.Tags, ",")
+		var images []string
 
-		images := make([]string, 10) // Ensure 4 slots for images
-		for i, img := range row.Images {
-			if i >= 10 {
-				break // Only include up to 4 images
-			}
-			images[i] = img.URL
+		for _, img := range row.Images {
+			images = append(images, img.URL)
 		}
+		imageUrls := strings.Join(images, ",")
 
-		// Prepare the row
 		csvRow := []string{
 			row.Sku,
 			row.Descriptions.Style,
@@ -47,8 +44,8 @@ func writeCSVFile(excelExport []Excel, fileName string) {
 			strconv.Itoa(row.Price),
 			row.Inventory,
 			tags,
+			imageUrls,
 		}
-		csvRow = append(csvRow, images...) // Append images to the row
 
 		if err := writer.Write(csvRow); err != nil {
 			panic(err)
@@ -57,14 +54,12 @@ func writeCSVFile(excelExport []Excel, fileName string) {
 }
 
 func writeJSONToFile(filename string, data interface{}) error {
-	// Create or truncate the file
 	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	// Create JSON encoder and write the data
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ") // Pretty-print with indentation
 	return encoder.Encode(data)
