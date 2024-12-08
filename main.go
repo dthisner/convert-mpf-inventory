@@ -18,7 +18,7 @@ func main() {
 	category := "fireplaces-149-items"
 	openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
 	exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", category)
-	exportJSONFileName := fmt.Sprintf("export/JSON/%s.json", category)
+	exportJSONFileName := fmt.Sprintf("export/JSON/export_%s.json", category)
 
 	MRF := openMRFJson(openJsonFileName)
 	excelExport := generateExportData(MRF)
@@ -29,6 +29,17 @@ func main() {
 		log.Printf(`Working with SKU: "%s" Item Number: %d`, s.Sku, i)
 		excelExport[i].Completed = true
 		excelExport[i].Duplicated = false
+		excelExport[i].MissingSKU = false
+
+		if s.Sku == "" {
+			excelExport[i].MissingSKU = true
+			excelExport[i].Completed = false
+			log.Printf("Missing SKU, here is image URL to find the item %s", s.Images[0].URL)
+			re := regexp.MustCompile(`v=(.+)`)
+			extractLastURLNumbers := re.FindStringSubmatch(s.Images[0].URL)
+			excelExport[i].Error = fmt.Sprintf("Look for: \"%s\", last numbers in the URL, should be unique", extractLastURLNumbers[1])
+			continue
+		}
 
 		if !isDuplicate(s.Sku) {
 			updateMap(s.Sku)
@@ -50,9 +61,9 @@ func main() {
 			log.Printf(`SKU: "%s" is a duplicate`, s.Sku)
 			excelExport[i].Duplicated = true
 		}
-		writeToDuplicateCheckJson()
 	}
 
+	writeToDuplicateCheckJson()
 	err := writeJSONToFile(exportJSONFileName, excelExport)
 	if err != nil {
 		fmt.Printf("Error writing JSON to file: %v\n", err)

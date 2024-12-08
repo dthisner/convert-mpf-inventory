@@ -20,6 +20,8 @@ type Excel struct {
 	Images       []ExcelImages
 	Tags         []string
 	Descriptions Descriptions
+	Error        string
 	Completed    bool
 	Duplicated   bool
+	MissingSKU   bool
 }
