@@ -1,54 +1,78 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"os"
 	"regexp"
 	"strings"
+	"sync"
+)
+
+var (
+	DATA_MAP             = make(map[string]bool)
+	MUTEX                sync.Mutex // To ensure thread-safe updates
+	DUPLICATE_CHECK_JSON string     = "data/duplicateCheck.json"
 )
 
 func main() {
-	openJsonFileName := "data/desks-149-items.json"
+	openJsonFileName := "data/mpf/desks-149-items.json"
 	exportCSVFileName := "export/CSV/desks-149-items.csv"
 	exportJSONFileName := "export/JSON/desks-149-items.json"
 
-	jsonFile, err := os.Open(openJsonFileName)
-	if err != nil {
-		log.Fatalf("issue opening file with err: %s", err)
-	}
-
-	byteValue, _ := io.ReadAll(jsonFile)
-
-	var MRF MPF_EXPORT
-	json.Unmarshal(byteValue, &MRF)
+	MRF := openMRFJson(openJsonFileName)
 	excelExport := generateExportData(MRF)
 
-	for i, s := range excelExport {
-		excelExport[i].Completed = true
+	DATA_MAP = openDuplicateCheckJson()
 
-		for i, image := range s.Images {
-			fileName := fmt.Sprintf("%s_0%d", s.Sku, i)
-			err := downloadAndSaveImage(fileName, image.URL)
-			if err != nil {
-				log.Print(err.Error())
-				s.Images[i].Error = err.Error()
-				s.Images[i].Saved = false
-				excelExport[i].Completed = false
-			} else {
-				s.Images[i].Saved = true
+	for i, s := range excelExport {
+		log.Printf(`Working with SKU: "%s"`, s.Sku)
+		excelExport[i].Completed = true
+		excelExport[i].Duplicated = false
+
+		if !isDuplicate(s.Sku) {
+			updateMap(s.Sku)
+
+			for i, image := range s.Images {
+				fileName := fmt.Sprintf("%s_0%d", s.Sku, i)
+				err := downloadAndSaveImage(fileName, image.URL)
+				if err != nil {
+					log.Print(err.Error())
+					s.Images[i].Error = err.Error()
+					s.Images[i].Saved = false
+					excelExport[i].Completed = false
+				} else {
+					s.Images[i].Saved = true
+				}
 			}
+
+		} else {
+			log.Printf(`SKU: "%s" is a duplicate`, s.Sku)
+			excelExport[i].Duplicated = true
 		}
 	}
 
-	err = writeJSONToFile(exportJSONFileName, excelExport)
+	writeToDuplicateCheckJson()
+	err := writeJSONToFile(exportJSONFileName, excelExport)
 	if err != nil {
 		fmt.Printf("Error writing JSON to file: %v\n", err)
 	}
 
 	writeCSVFile(excelExport, exportCSVFileName)
+}
+
+func updateMap(key string) {
+	MUTEX.Lock()
+	defer MUTEX.Unlock()
+	DATA_MAP[key] = true
+	log.Printf("Updated key '%s' with value '%v'\n", key, true)
+}
+
+func isDuplicate(sku string) bool {
+	if _, ok := DATA_MAP[sku]; ok {
+		return true
+	}
+
+	return false
 }
 
 func generateExportData(MRF MPF_EXPORT) []Excel {

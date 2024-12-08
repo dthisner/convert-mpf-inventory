@@ -7,6 +7,12 @@ type Descriptions struct {
 	Material string
 }
 
+type ExcelImages struct {
+	URL   string
+	Saved bool
+	Error string
+}
+
 type Excel struct {
 	Sku          string
 	Price        int
@@ -15,10 +21,5 @@ type Excel struct {
 	Tags         []string
 	Descriptions Descriptions
 	Completed    bool
-}
-
-type ExcelImages struct {
-	URL   string
-	Saved bool
-	Error string
+	Duplicated   bool
 }

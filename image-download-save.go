@@ -15,14 +15,12 @@ import (
 )
 
 func downloadImage(url string) ([]byte, string, error) {
-	// Send HTTP request to fetch the image
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, "", err
 	}
 	defer resp.Body.Close()
 
-	// Read the image data from the response body
 	imgData, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, "", err
