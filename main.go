@@ -15,7 +15,7 @@ var (
 )
 
 func main() {
-	category := "misc-4-items"
+	category := "fireplaces-149-items"
 	openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
 	exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", category)
 	exportJSONFileName := fmt.Sprintf("export/JSON/%s.json", category)
@@ -26,7 +26,7 @@ func main() {
 	DATA_MAP = openDuplicateCheckJson()
 
 	for i, s := range excelExport {
-		log.Printf(`Working with SKU: "%s"`, s.Sku)
+		log.Printf(`Working with SKU: "%s" Item Number: %d`, s.Sku, i)
 		excelExport[i].Completed = true
 		excelExport[i].Duplicated = false
 
@@ -50,9 +50,9 @@ func main() {
 			log.Printf(`SKU: "%s" is a duplicate`, s.Sku)
 			excelExport[i].Duplicated = true
 		}
+		writeToDuplicateCheckJson()
 	}
 
-	writeToDuplicateCheckJson()
 	err := writeJSONToFile(exportJSONFileName, excelExport)
 	if err != nil {
 		fmt.Printf("Error writing JSON to file: %v\n", err)
