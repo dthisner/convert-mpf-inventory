@@ -15,9 +15,10 @@ var (
 )
 
 func main() {
-	openJsonFileName := "data/mpf/desks-149-items.json"
-	exportCSVFileName := "export/CSV/desks-149-items.csv"
-	exportJSONFileName := "export/JSON/desks-149-items.json"
+	fileName := "misc-4-items"
+	openJsonFileName := fmt.Sprintf("data/mpf/%s.json", fileName)
+	exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", fileName)
+	exportJSONFileName := fmt.Sprintf("export/JSON/%s.json", fileName)
 
 	MRF := openMRFJson(openJsonFileName)
 	excelExport := generateExportData(MRF)
