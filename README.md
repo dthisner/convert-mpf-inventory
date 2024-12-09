@@ -7,6 +7,7 @@ There been a manual changes around, ex: Extracting collections and their IDs fro
 ## Features
 
 - There is a duplicateCheck.json that is being created, which the tool checks to see if the item has been generated or not, making sure there is no duplications
+- Missing SKU, generating a new SKU and it should awalys be unique
 - The OutPut JSON is a debugger in a way, to see what happen and able to trace for files and images saved.
 
 ## TO DO
