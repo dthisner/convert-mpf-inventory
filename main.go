@@ -24,15 +24,16 @@ func main() {
 	for _, data := range collections {
 		// "furniture-armoires-23-items"
 		category := fmt.Sprintf("%s-%s-%d-items", data.Category, data.Name, data.TotalItems)
+		log.Printf("category %s", category)
+		log.Printf("data.Name %s", strings.ToUpper(data.Name))
+
 		// openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
 		exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", category)
 		exportJSONFileName := fmt.Sprintf("export/JSON/export_%s.json", category)
 
 		// MRF := openMRFJson(openJsonFileName)
 		excelExport := generateExportData(data.MRP_DATA)
-
 		DATA_MAP = openDuplicateCheckJson()
-
 		missingSKU := 1
 
 		for i, s := range excelExport {
@@ -44,7 +45,7 @@ func main() {
 			if s.Sku == "" {
 				log.Printf("Missing SKU, here is image URL to find the item %s", s.Images[0].URL)
 				s.Sku = fmt.Sprintf("%s%d", strings.ToUpper(data.Name), missingSKU)
-				log.Printf("New SKU name is: %s")
+				log.Printf("New SKU name is: %s", s.Sku)
 				missingSKU++
 			}
 

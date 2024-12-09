@@ -103,12 +103,10 @@ func GetCollections() []models.CollectionData {
 		285402300614: "torchieres",
 	}
 
-	_ = lightningCollectionsID
-
-	log.Print("Getting ALL the collections")
+	_ = smallsCollectionID
 
 	var collectionData []models.CollectionData
-	for id, name := range smallsCollectionID {
+	for id, name := range lightningCollectionsID {
 		var collection models.CollectionData
 		start := 0
 		end := 200
