@@ -1,4 +1,4 @@
-package main
+package models
 
 type Descriptions struct {
 	Style    string
@@ -24,4 +24,12 @@ type Excel struct {
 	Completed    bool
 	Duplicated   bool
 	MissingSKU   bool
+}
+
+type CollectionData struct {
+	Name       string
+	Category   string
+	ID         int
+	MRP_DATA   MPF_EXPORT
+	TotalItems int
 }

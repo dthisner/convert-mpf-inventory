@@ -6,70 +6,78 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+
+	mpf "export-mountpf-inventory/MPF"
+	"export-mountpf-inventory/models"
 )
 
 var (
-	DATA_MAP             = make(map[string]bool)
-	MUTEX                sync.Mutex // To ensure thread-safe updates
 	DUPLICATE_CHECK_JSON string     = "data/duplicateCheck.json"
+	DATA_MAP                        = make(map[string]bool)
+	MUTEX                sync.Mutex // To ensure thread-safe updates
 )
 
 func main() {
-	category := "fireplaces-149-items"
-	openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
-	exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", category)
-	exportJSONFileName := fmt.Sprintf("export/JSON/export_%s.json", category)
+	// getCollectionIds()
+	collections := mpf.GetCollections()
 
-	MRF := openMRFJson(openJsonFileName)
-	excelExport := generateExportData(MRF)
+	for _, data := range collections {
+		// "furniture-armoires-23-items"
+		category := fmt.Sprintf("%s-%s-%d-items", data.Category, data.Name, data.TotalItems)
+		// openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
+		exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", category)
+		exportJSONFileName := fmt.Sprintf("export/JSON/export_%s.json", category)
 
-	DATA_MAP = openDuplicateCheckJson()
+		// MRF := openMRFJson(openJsonFileName)
+		excelExport := generateExportData(data.MRP_DATA)
 
-	for i, s := range excelExport {
-		log.Printf(`Working with SKU: "%s" Item Number: %d`, s.Sku, i)
-		excelExport[i].Completed = true
-		excelExport[i].Duplicated = false
-		excelExport[i].MissingSKU = false
+		DATA_MAP = openDuplicateCheckJson()
 
-		if s.Sku == "" {
-			excelExport[i].MissingSKU = true
-			excelExport[i].Completed = false
-			log.Printf("Missing SKU, here is image URL to find the item %s", s.Images[0].URL)
-			re := regexp.MustCompile(`v=(.+)`)
-			extractLastURLNumbers := re.FindStringSubmatch(s.Images[0].URL)
-			excelExport[i].Error = fmt.Sprintf("Look for: \"%s\", last numbers in the URL, should be unique", extractLastURLNumbers[1])
-			continue
-		}
+		missingSKU := 1
 
-		if !isDuplicate(s.Sku) {
-			updateMap(s.Sku)
+		for i, s := range excelExport {
+			log.Printf(`Working with SKU: "%s" Item Number: %d`, s.Sku, i)
+			excelExport[i].Completed = true
+			excelExport[i].Duplicated = false
+			excelExport[i].MissingSKU = false
 
-			for i, image := range s.Images {
-				fileName := fmt.Sprintf("%s_0%d", s.Sku, i)
-				err := downloadAndSaveImage(fileName, image.URL, category)
-				if err != nil {
-					log.Print(err.Error())
-					s.Images[i].Error = err.Error()
-					s.Images[i].Saved = false
-					excelExport[i].Completed = false
-				} else {
-					s.Images[i].Saved = true
-				}
+			if s.Sku == "" {
+				log.Printf("Missing SKU, here is image URL to find the item %s", s.Images[0].URL)
+				s.Sku = fmt.Sprintf("%s%d", strings.ToUpper(data.Name), missingSKU)
+				log.Printf("New SKU name is: %s")
+				missingSKU++
 			}
 
-		} else {
-			log.Printf(`SKU: "%s" is a duplicate`, s.Sku)
-			excelExport[i].Duplicated = true
+			if !isDuplicate(s.Sku) {
+				updateMap(s.Sku)
+
+				for i, image := range s.Images {
+					fileName := fmt.Sprintf("%s_0%d", s.Sku, i)
+					err := downloadAndSaveImage(fileName, image.URL, category)
+					if err != nil {
+						log.Print(err.Error())
+						s.Images[i].Error = err.Error()
+						s.Images[i].Saved = false
+						excelExport[i].Completed = false
+					} else {
+						s.Images[i].Saved = true
+					}
+				}
+
+			} else {
+				log.Printf(`SKU: "%s" is a duplicate`, s.Sku)
+				excelExport[i].Duplicated = true
+			}
 		}
-	}
 
-	writeToDuplicateCheckJson()
-	err := writeJSONToFile(exportJSONFileName, excelExport)
-	if err != nil {
-		fmt.Printf("Error writing JSON to file: %v\n", err)
-	}
+		writeToDuplicateCheckJson()
+		err := writeJSONToFile(exportJSONFileName, excelExport)
+		if err != nil {
+			log.Printf("Error writing JSON to file: %v\n", err)
+		}
 
-	writeCSVFile(excelExport, exportCSVFileName)
+		writeCSVFile(excelExport, exportCSVFileName)
+	}
 }
 
 func updateMap(key string) {
@@ -87,16 +95,16 @@ func isDuplicate(sku string) bool {
 	return false
 }
 
-func generateExportData(MRF MPF_EXPORT) []Excel {
-	var excelExport []Excel
+func generateExportData(MRF models.MPF_EXPORT) []models.Excel {
+	var excelExport []models.Excel
 
 	for _, s := range MRF.Data.Items {
-		var excel Excel
+		var excel models.Excel
 		excel.Sku = s.Variants[0].Sku
 		excel.Price = s.Variants[0].Price
 		excel.Tags = removeIntFromTags(s.Tags)
 
-		excel.Images = make([]ExcelImages, len(s.Images))
+		excel.Images = make([]models.ExcelImages, len(s.Images))
 		for i, img := range s.Images {
 			excel.Images[i].URL = strings.Replace(img.URL, "//", "https://", 1)
 		}
@@ -110,8 +118,8 @@ func generateExportData(MRF MPF_EXPORT) []Excel {
 	return excelExport
 }
 
-func extractDescriptions(description string) Descriptions {
-	var result Descriptions
+func extractDescriptions(description string) models.Descriptions {
+	var result models.Descriptions
 
 	sizeRegex := regexp.MustCompile(`(?:Size|Dimensions):\s*([^<]+)`)
 	materialRegex := regexp.MustCompile(`Material:\s*([^<]+)`)

@@ -8,9 +8,11 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"export-mountpf-inventory/models"
 )
 
-func writeCSVFile(excelExport []Excel, fileName string) {
+func writeCSVFile(excelExport []models.Excel, fileName string) {
 	header := []string{"Sku", "Style", "Size", "Color", "Material", "Price", "Inventory", "Tags", "Images"}
 
 	file, err := os.Create(fileName)
@@ -65,14 +67,14 @@ func writeJSONToFile(filename string, data interface{}) error {
 	return encoder.Encode(data)
 }
 
-func openMRFJson(filename string) MPF_EXPORT {
+func openMRFJson(filename string) models.MPF_EXPORT {
 	jsonFile, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("issue opening file with err: %s", err)
 	}
 	byteValue, _ := io.ReadAll(jsonFile)
 
-	var MRF MPF_EXPORT
+	var MRF models.MPF_EXPORT
 	json.Unmarshal(byteValue, &MRF)
 
 	return MRF
@@ -104,14 +106,12 @@ func writeMapToFile(filename string, m map[string]bool) error {
 	MUTEX.Lock()
 	defer MUTEX.Unlock()
 
-	// Open the file for writing
 	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	// Serialize the map to JSON
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ") // Pretty print JSON
 	return encoder.Encode(m)

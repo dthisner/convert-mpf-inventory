@@ -1,18 +1,18 @@
-package main
+package models
 
 import "time"
 
 type MPF_EXPORT struct {
 	Data struct {
-		Query            string  `json:"query,omitempty"`
-		TotalCollections int     `json:"totalCollections,omitempty"`
-		Collections      any     `json:"collections,omitempty"`
-		TotalPages       int     `json:"totalPages,omitempty"`
-		Pages            any     `json:"pages,omitempty"`
-		Suggestions      any     `json:"suggestions,omitempty"`
-		Total            int     `json:"total,omitempty"`
-		Items            []Items `json:"items,omitempty"`
-		Facets           Facets  `json:"facets,omitempty"`
+		Query            string   `json:"query,omitempty"`
+		TotalCollections int      `json:"totalCollections,omitempty"`
+		Collections      any      `json:"collections,omitempty"`
+		TotalPages       int      `json:"totalPages,omitempty"`
+		Pages            any      `json:"pages,omitempty"`
+		Suggestions      any      `json:"suggestions,omitempty"`
+		Total            int      `json:"total,omitempty"`
+		Items            []Items  `json:"items,omitempty"`
+		Facets           []Facets `json:"facets,omitempty"`
 		Extra            struct {
 			Collections []Collections `json:"collections,omitempty"`
 		} `json:"extra,omitempty"`
