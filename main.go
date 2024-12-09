@@ -17,9 +17,68 @@ var (
 	MUTEX                sync.Mutex // To ensure thread-safe updates
 )
 
+var smallsCollectionID = map[int]string{
+	472543199509: "art-glass",
+	286482694342: "containers",
+	286482792646: "bells",
+	471777870101: "copper",
+	472025563413: "desktop-smalls",
+	430688174357: "globes",
+	472556405013: "trays",
+	286460477638: "urns",
+	286482596038: "gongs",
+	286482727110: "hookahs",
+	286482825414: "incense-burners",
+	426051109141: "projectors",
+	470517874965: "statues",
+	286460608710: "teapot",
+	287564398790: "tvs",
+	286460641478: "animals",
+	286482563270: "boxes",
+	471777837333: "brass",
+	286482759878: "candelabras",
+	471777607957: "samovars",
+	286460510406: "vases",
+	285874553030: "cloisonne",
+	471847371029: "inkwells",
+	475696267541: "musical-instruments",
+	471847305493: "pen-holders",
+	286449172678: "sculptures",
+	287093620934: "speakers",
+	286482923718: "book-ends",
+	470517907733: "busts",
+	426050879765: "cameras",
+	286482661574: "masks",
+	471778787605: "navigation-equipment",
+	286460575942: "planters",
+	286482890950: "plates",
+	287093653702: "turntables",
+	286482858182: "bowls",
+	286522441926: "clocks",
+	472519999765: "medical",
+	472735056149: "model-boats",
+	286460543174: "figurines",
+	286949703878: "radios",
+	472520524053: "scientific",
+	471707681045: "silver",
+}
+
+var lightningCollectionsID = map[int]string{
+	471707615509: "bridge-lamp",
+	286482759878: "candelabra",
+	270290223302: "chandeliers",
+	471707648277: "desk-lamp",
+	470452470037: "floor-lamps",
+	471707418901: "lamp-shades",
+	270818279622: "neon-sign",
+	270048460998: "scones",
+	430756593941: "table-lamps",
+	285402300614: "torchieres",
+}
+
 func main() {
 	// getCollectionIds()
-	collections := mpf.GetCollections()
+	collections := mpf.GetCollections(smallsCollectionID, "smalls")
 
 	for _, data := range collections {
 		// "furniture-armoires-23-items"
@@ -37,7 +96,7 @@ func main() {
 		missingSKU := 1
 
 		for i, s := range excelExport {
-			log.Printf(`Working with SKU: "%s" Item Number: %d`, s.Sku, i)
+			log.Printf(`Working with SKU: "%s" Item Number: %d out off: %d`, s.Sku, i, len(excelExport))
 			excelExport[i].Completed = true
 			excelExport[i].Duplicated = false
 			excelExport[i].MissingSKU = false
@@ -72,6 +131,7 @@ func main() {
 		}
 
 		writeToDuplicateCheckJson()
+
 		err := writeJSONToFile(exportJSONFileName, excelExport)
 		if err != nil {
 			log.Printf("Error writing JSON to file: %v\n", err)

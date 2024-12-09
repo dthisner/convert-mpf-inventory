@@ -84,6 +84,8 @@ func downloadAndSaveImage(fileName, url, category string) error {
 		return fmt.Errorf("issue: saving image for %s with error: %s", outputFilename, err)
 	}
 
+	log.Printf("Saved image to: %s", outputFilename)
+
 	return nil
 }
 

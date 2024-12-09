@@ -43,70 +43,10 @@ func getCollectionData(id, start, end int) (models.MPF_EXPORT, error) {
 	return MPF, nil
 }
 
-func GetCollections() []models.CollectionData {
-	smallsCollectionID := map[int]string{
-		472543199509: "art-glass",
-		286482694342: "containers",
-		286482792646: "bells",
-		471777870101: "copper",
-		472025563413: "desktop-smalls",
-		430688174357: "globes",
-		472556405013: "trays",
-		286460477638: "urns",
-		286482596038: "gongs",
-		286482727110: "hookahs",
-		286482825414: "incense-burners",
-		426051109141: "projectors",
-		470517874965: "statues",
-		286460608710: "teapot",
-		287564398790: "tvs",
-		286460641478: "animals",
-		286482563270: "boxes",
-		471777837333: "brass",
-		286482759878: "candelabras",
-		471777607957: "samovars",
-		286460510406: "vases",
-		285874553030: "cloisonne",
-		471847371029: "inkwells",
-		475696267541: "musical-instruments",
-		471847305493: "pen-holders",
-		286449172678: "sculptures",
-		287093620934: "speakers",
-		286482923718: "book-ends",
-		470517907733: "busts",
-		426050879765: "cameras",
-		286482661574: "masks",
-		471778787605: "navigation-equipment",
-		286460575942: "planters",
-		286482890950: "plates",
-		287093653702: "turntables",
-		286482858182: "bowls",
-		286522441926: "clocks",
-		472519999765: "medical",
-		472735056149: "model-boats",
-		286460543174: "figurines",
-		286949703878: "radios",
-		472520524053: "scientific",
-		471707681045: "silver",
-	}
-
-	lightningCollectionsID := map[int]string{
-		471707615509: "bridge-lamp",
-		286482759878: "candelabra",
-		270290223302: "chandeliers",
-		471707648277: "desk-lamp",
-		470452470037: "floor-lamps",
-		471707418901: "lamp-shades",
-		270818279622: "neon-sign",
-		270048460998: "scones",
-		430756593941: "table-lamps",
-		285402300614: "torchieres",
-	}
-
-	_ = smallsCollectionID
-
+func GetCollections(collectionName map[int]string, category string) []models.CollectionData {
 	var collectionData []models.CollectionData
-	for id, name := range lightningCollectionsID {
+
+	for id, name := range collectionName {
 		var collection models.CollectionData
 		start := 0
 		end := 200
@@ -118,7 +58,7 @@ func GetCollections() []models.CollectionData {
 
 		collection.MRP_DATA = MPF
 		collection.ID = id
-		collection.Category = "lightning"
+		collection.Category = category
 		collection.Name = name
 		collection.TotalItems = MPF.Data.Total
 
@@ -144,6 +84,8 @@ func GetCollections() []models.CollectionData {
 
 		collectionData = append(collectionData, collection)
 	}
+
+	writeJSONToFile("./data/smallsCollectionID.json", collectionData)
 
 	return collectionData
 }
