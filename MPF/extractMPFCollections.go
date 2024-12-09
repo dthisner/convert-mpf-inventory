@@ -85,7 +85,8 @@ func GetCollections(collectionName map[int]string, category string) []models.Col
 		collectionData = append(collectionData, collection)
 	}
 
-	writeJSONToFile("./data/smallsCollectionID.json", collectionData)
+	fileName := fmt.Sprintf("./data/%s.json", category)
+	writeJSONToFile(fileName, collectionData)
 
 	return collectionData
 }
