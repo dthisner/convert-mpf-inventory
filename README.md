@@ -10,7 +10,10 @@ There been a manual changes around, ex: Extracting collections and their IDs fro
 - Missing SKU, generating a new SKU and it should awalys be unique
 - The OutPut JSON is a debugger in a way, to see what happen and able to trace for files and images saved.
 
-## TO DO
+## Next Up
 
 - When exporting CSV and JSON, should add **-1** when a file with the same name exist
 - Add date to the JSON exports
+- Cleanout the indendet loops upon loops
+- Support to re-run exported JSON to download failed images
+- Make it into a proper command tool using [Cobra](https://github.com/spf13/cobra)
