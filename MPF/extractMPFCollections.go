@@ -16,26 +16,26 @@ import (
 )
 
 var (
-	API_KEY  string
-	BASE_URL string
+	API_KEY string
+	API_URL string
 )
 
-func readEnvFile() {
+func ReadEnvFile() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
 	API_KEY = os.Getenv("API_KEY")
-	BASE_URL = os.Getenv("BASE_URL")
+	API_URL = os.Getenv("API_URL")
 }
 
 func getCollectionData(id, start, end int) (models.MPF_EXPORT, error) {
 	var MPF models.MPF_EXPORT
 
-	readEnvFile()
+	ReadEnvFile()
 	log.Printf("Getting for Collection ID: %d from %d to %d", id, start, end)
-	url := fmt.Sprintf("%ssearch?q=&apiKey=%s&locale=en&collection=%d&skip=%d&take=%d&sort=title", BASE_URL, API_KEY, id, start, end)
+	url := fmt.Sprintf("%ssearch?q=&apiKey=%s&locale=en&collection=%d&skip=%d&take=%d&sort=title", API_URL, API_KEY, id, start, end)
 
 	client := &http.Client{}
 	resp, err := client.Get(url)

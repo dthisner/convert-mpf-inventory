@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	mpf "export-mountpf-inventory/MPF"
 	"fmt"
 	"image"
 	_ "image/jpeg" // Import JPEG decoder
@@ -90,6 +91,8 @@ func downloadAndSaveImage(fileName, url, category string) error {
 }
 
 func getCollectionIds() {
+	mpf.ReadEnvFile()
+
 	urls := map[string]string{
 		"/collections/animals":              "animals",
 		"/collections/art-glass":            "art glass",
@@ -137,8 +140,10 @@ func getCollectionIds() {
 	}
 
 	// Extracing the Collection ID when navigating to that collection
+	BASE_URL := os.Getenv("BASE_URL")
+
 	for u, name := range urls {
-		url := fmt.Sprintf("https://mountpf.com/%s", u)
+		url := fmt.Sprintf("%s%s", BASE_URL, u)
 
 		resp, err := http.Get(url)
 		if err != nil {
