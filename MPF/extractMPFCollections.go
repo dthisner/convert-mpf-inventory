@@ -11,21 +11,31 @@ import (
 	"strings"
 
 	"export-mountpf-inventory/models"
+
+	"github.com/joho/godotenv"
 )
 
 var (
-	API_KEY string = "311bdd33-497e-4579-8468-75257954f7b8"
+	API_KEY  string
+	BASE_URL string
 )
 
-// Loopa igenom Collections för att få ALLA collections, MPF
-// Spara ut dem som CSV
+func readEnvFile() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	API_KEY = os.Getenv("API_KEY")
+	BASE_URL = os.Getenv("BASE_URL")
+}
 
 func getCollectionData(id, start, end int) (models.MPF_EXPORT, error) {
 	var MPF models.MPF_EXPORT
-	log.Printf("Getting for Collection ID: %d from %d to %d", id, start, end)
 
-	url := fmt.Sprintf("https://svc-1001-usf.hotyon.com/search?q=&apiKey=%s&locale=en&collection=%d&skip=%d&take=%d&sort=title", API_KEY, id, start, end)
-	// log.Printf("The Log: \"%s\"", url)
+	readEnvFile()
+	log.Printf("Getting for Collection ID: %d from %d to %d", id, start, end)
+	url := fmt.Sprintf("%ssearch?q=&apiKey=%s&locale=en&collection=%d&skip=%d&take=%d&sort=title", BASE_URL, API_KEY, id, start, end)
 
 	client := &http.Client{}
 	resp, err := client.Get(url)
