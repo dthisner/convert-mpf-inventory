@@ -6,6 +6,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"regexp"
+	"strings"
 
 	"export-mountpf-inventory/models"
 )
@@ -89,6 +92,70 @@ func GetCollections(collectionName map[int]string, category string) []models.Col
 	writeJSONToFile(fileName, collectionData)
 
 	return collectionData
+}
+
+func GetCollectionsFromFolderWithJSON(filePath string) []models.CollectionData {
+	files, err := os.ReadDir(filePath)
+	if err != nil {
+		log.Fatalf("Failed to read directory: %v", err)
+	}
+
+	var collectionData []models.CollectionData
+
+	for _, file := range files {
+		var collection models.CollectionData
+		var MPF models.MPF_EXPORT
+
+		log.Printf("file: \"%s\"", file)
+
+		filePath := filepath.Join(filePath, file.Name())
+		fmt.Printf("Processing file: %s\n", filePath)
+
+		content, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Printf("Failed to read file %s: %v", filePath, err)
+			continue
+		}
+
+		if err := json.Unmarshal([]byte(content), &MPF); err != nil {
+			log.Printf("Failed to unmarshal file %s: %v", filePath, err)
+			continue
+		}
+
+		result := extractCategoryAndCollection(file.Name())
+
+		collection.MRP_DATA = MPF
+		collection.Category = result["category"]
+		collection.Name = result["collection"]
+		collection.TotalItems = MPF.Data.Total
+
+		log.Printf("category: \"%s\" collection: \"%s\" Total: \"%d\"", collection.Category, collection.Name, collection.TotalItems)
+
+		collectionData = append(collectionData, collection)
+	}
+
+	return collectionData
+}
+
+func extractCategoryAndCollection(filename string) map[string]string {
+	pattern := `^(\w+)-(.*?)(\d)`
+	re := regexp.MustCompile(pattern)
+	matches := re.FindStringSubmatch(filename)
+
+	result := make(map[string]string)
+
+	category := matches[1]   // First word
+	collection := matches[2] // Everything up to the number
+	collection = strings.TrimSuffix(collection, "-")
+
+	if collection == "" {
+		collection = category
+	}
+
+	result["category"] = category
+	result["collection"] = collection
+
+	return result
 }
 
 func writeJSONToFile(filename string, data interface{}) error {

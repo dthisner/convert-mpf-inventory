@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"time"
 
 	mpf "export-mountpf-inventory/MPF"
 	"export-mountpf-inventory/models"
@@ -78,17 +79,22 @@ var lightningCollectionsID = map[int]string{
 
 func main() {
 	// getCollectionIds()
-	collections := mpf.GetCollections(smallsCollectionID, "smalls")
+	// collections := mpf.GetCollections(smallsCollectionID, "smalls")
+	collections := mpf.GetCollectionsFromFolderWithJSON("./data/mpf")
+
+	now := time.Now()
+	timeNow := now.Format("2006-01-02-15-04")
+
+	log.Printf("# of Collections %d", len(collections))
 
 	for _, data := range collections {
 		// "furniture-armoires-23-items"
 		category := fmt.Sprintf("%s-%s-%d-items", data.Category, data.Name, data.TotalItems)
 		log.Printf("category %s", category)
-		log.Printf("data.Name %s", strings.ToUpper(data.Name))
 
 		// openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
-		exportCSVFileName := fmt.Sprintf("export/CSV/%s.csv", category)
-		exportJSONFileName := fmt.Sprintf("export/JSON/export_%s.json", category)
+		exportCSVFileName := fmt.Sprintf("export/CSV/%s-%s.csv", timeNow, category)
+		exportJSONFileName := fmt.Sprintf("export/JSON/export-%s_%s.json", timeNow, category)
 
 		// MRF := openMRFJson(openJsonFileName)
 		excelExport := generateExportData(data.MRP_DATA)
@@ -100,6 +106,13 @@ func main() {
 			excelExport[i].Completed = true
 			excelExport[i].Duplicated = false
 			excelExport[i].MissingSKU = false
+
+			if len(s.Images) < 1 {
+				log.Printf("No Images: %d", len(s.Images))
+				excelExport[i].Completed = false
+				excelExport[i].Error = "No Images to be located"
+				continue
+			}
 
 			if s.Sku == "" {
 				log.Printf("Missing SKU, here is image URL to find the item %s", s.Images[0].URL)
