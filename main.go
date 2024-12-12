@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"sync"
@@ -10,12 +12,6 @@ import (
 
 	mpf "export-mountpf-inventory/MPF"
 	"export-mountpf-inventory/models"
-)
-
-var (
-	DUPLICATE_CHECK_JSON string     = "data/duplicateCheck.json"
-	DATA_MAP                        = make(map[string]bool)
-	MUTEX                sync.Mutex // To ensure thread-safe updates
 )
 
 var smallsCollectionID = map[int]string{
@@ -77,14 +73,49 @@ var lightningCollectionsID = map[int]string{
 	285402300614: "torchieres",
 }
 
+var (
+	DUPLICATE_CHECK_JSON string     = "data/duplicateCheckCSV.json"
+	DATA_MAP                        = make(map[string]bool)
+	MUTEX                sync.Mutex // To ensure thread-safe updates
+	TIME                 string
+)
+
 func main() {
-	// getCollectionIds()
-	// collections := mpf.GetCollections(smallsCollectionID, "smalls")
-	collections := mpf.GetCollectionsFromFolderWithJSON("./data/mpf")
-
 	now := time.Now()
-	timeNow := now.Format("2006-01-02-15-04")
+	TIME = now.Format("2006-01-02-15-04")
 
+	path := "export/CSV/_uploaded"
+	listOfFiles, err := os.ReadDir(path)
+	if err != nil {
+		log.Fatalf("Failed to read directory: %v", err)
+	}
+
+	var excelExports []models.Excel
+
+	for _, file := range listOfFiles {
+		filePath := filepath.Join(path, file.Name())
+
+		excelExport, err := readCSVExport(filePath)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		excelExports = append(excelExports, excelExport...)
+	}
+
+	getCollections := false
+	if getCollections {
+		getCollectionIds()
+		collections := mpf.GetCollections(smallsCollectionID, "smalls")
+		// collections := mpf.GetCollectionsFromFolderWithJSON("./data/mpf")
+		exportFromCollections(collections)
+	}
+
+	writeCSVFile(excelExports, "./export/csv/masterList.csv")
+
+}
+
+func exportFromCollections(collections []models.CollectionData) {
 	log.Printf("# of Collections %d", len(collections))
 
 	for _, data := range collections {
@@ -93,8 +124,8 @@ func main() {
 		log.Printf("category %s", category)
 
 		// openJsonFileName := fmt.Sprintf("data/mpf/%s.json", category)
-		exportCSVFileName := fmt.Sprintf("export/CSV/%s-%s.csv", timeNow, category)
-		exportJSONFileName := fmt.Sprintf("export/JSON/export-%s_%s.json", timeNow, category)
+		exportCSVFileName := fmt.Sprintf("export/CSV/%s-%s.csv", TIME, category)
+		exportJSONFileName := fmt.Sprintf("export/JSON/export-%s_%s.json", TIME, category)
 
 		// MRF := openMRFJson(openJsonFileName)
 		excelExport := generateExportData(data.MRP_DATA)
@@ -122,7 +153,7 @@ func main() {
 			}
 
 			if !isDuplicate(s.Sku) {
-				updateMap(s.Sku)
+				updateDuplicateSkuMap(s.Sku)
 
 				for i, image := range s.Images {
 					fileName := fmt.Sprintf("%s_0%d", s.Sku, i)
@@ -154,7 +185,7 @@ func main() {
 	}
 }
 
-func updateMap(key string) {
+func updateDuplicateSkuMap(key string) {
 	MUTEX.Lock()
 	defer MUTEX.Unlock()
 	DATA_MAP[key] = true

@@ -104,8 +104,8 @@ func GetCollections(collectionName map[int]string, category string) []models.Col
 	return collectionData
 }
 
-func GetCollectionsFromFolderWithJSON(filePath string) []models.CollectionData {
-	files, err := os.ReadDir(filePath)
+func GetCollectionsFromFolderWithJSON(path string) []models.CollectionData {
+	files, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatalf("Failed to read directory: %v", err)
 	}
@@ -118,7 +118,7 @@ func GetCollectionsFromFolderWithJSON(filePath string) []models.CollectionData {
 
 		log.Printf("file: \"%s\"", file)
 
-		filePath := filepath.Join(filePath, file.Name())
+		filePath := filepath.Join(path, file.Name())
 		fmt.Printf("Processing file: %s\n", filePath)
 
 		content, err := os.ReadFile(filePath)

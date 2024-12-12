@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -11,6 +12,76 @@ import (
 
 	"export-mountpf-inventory/models"
 )
+
+func readCSVExport(filePath string) ([]models.Excel, error) {
+	var MPFItems []models.Excel
+
+	file, err := os.Open(filePath)
+	if err != nil {
+		return MPFItems, fmt.Errorf("Failed to open file: %s", err)
+	}
+	defer file.Close()
+
+	csvReader := csv.NewReader(file)
+
+	records, err := csvReader.ReadAll()
+	if err != nil {
+		return MPFItems, fmt.Errorf("Failed to Read file: %s", err)
+	}
+
+	// Skip the header if your file has one
+	// If not, remove the next line
+	records = records[1:]
+
+	for _, record := range records {
+		sku := record[0]
+
+		if isDuplicate(sku) {
+			log.Printf(`SKU: "%s" is a duplicate`, sku)
+			continue
+		}
+		updateDuplicateSkuMap(sku)
+
+		price, err := strconv.Atoi(record[5])
+		if err != nil {
+			log.Printf("Skipping record: %v (Failed to convert age to int: %s)\n", record, err)
+			continue
+		}
+
+		tags := strings.Split(record[7], ",")
+		splitImages := strings.Split(record[8], ",")
+
+		var images []models.ExcelImages
+		for _, img := range splitImages {
+			var image models.ExcelImages
+
+			image.URL = img
+			images = append(images, image)
+		}
+
+		desc := models.Descriptions{
+			Style:    record[1],
+			Size:     record[2],
+			Color:    record[3],
+			Material: record[4],
+		}
+
+		item := models.Excel{
+			Sku:          sku,
+			Price:        price,
+			Inventory:    record[6],
+			Tags:         tags,
+			Images:       images,
+			Descriptions: desc,
+		}
+
+		MPFItems = append(MPFItems, item)
+	}
+
+	writeToDuplicateCheckJson()
+
+	return MPFItems, nil
+}
 
 func writeCSVFile(excelExport []models.Excel, fileName string) {
 	header := []string{"Sku", "Style", "Size", "Color", "Material", "Price", "Inventory", "Tags", "Images"}
