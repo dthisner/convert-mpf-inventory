@@ -84,7 +84,9 @@ func main() {
 	now := time.Now()
 	TIME = now.Format("2006-01-02-15-04")
 
-	path := "export/CSV/_uploaded"
+	// downloadRemainingImages()
+
+	path := "export/CSV"
 	listOfFiles, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatalf("Failed to read directory: %v", err)
@@ -113,6 +115,75 @@ func main() {
 
 	writeCSVFile(excelExports, "./export/csv/masterList.csv")
 
+}
+
+func cleanFilename(filename string) string {
+	if idx := strings.Index(filename, "_"); idx != -1 {
+		return filename[:idx]
+	}
+	return filename
+}
+
+func downloadRemainingImages() {
+	var listOfDownloadedImages = make(map[string]bool)
+
+	imagesPath := "/Users/sleipnir/Desktop/VPC Images"
+	listOfImages, err := os.ReadDir(imagesPath)
+	if err != nil {
+		log.Fatalf("Failed to read directory: %v", err)
+	}
+
+	for _, img := range listOfImages {
+		fileName := cleanFilename(img.Name())
+
+		if fileName == ".DS" {
+			log.Printf("SKU Code: %s, skipping", fileName)
+			continue
+		}
+
+		_, ok := listOfDownloadedImages[fileName]
+		if !ok {
+			log.Printf("Adding SKU: %s", fileName)
+			listOfDownloadedImages[fileName] = true
+		}
+	}
+
+	path := "export/CSV"
+	listOfFiles, err := os.ReadDir(path)
+	if err != nil {
+		log.Fatalf("Failed to read directory: %v", err)
+	}
+
+	var excelExports []models.Excel
+
+	for _, file := range listOfFiles {
+		filePath := filepath.Join(path, file.Name())
+
+		excelExport, err := readCSVExport(filePath)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		excelExports = append(excelExports, excelExport...)
+	}
+
+	for _, row := range excelExports {
+		_, ok := listOfDownloadedImages[row.Sku]
+
+		if ok {
+			log.Printf("SKU %s already exist", row.Sku)
+			continue
+		}
+
+		for i, img := range row.Images {
+			fileName := fmt.Sprintf("%s_0%d", row.Sku, i)
+
+			err = downloadAndSaveImage(fileName, img.URL, "missing")
+			if err != nil {
+				log.Printf("Problem downloading SKU %s with URL: %s", row.Sku, fileName)
+			}
+		}
+	}
 }
 
 func exportFromCollections(collections []models.CollectionData) {

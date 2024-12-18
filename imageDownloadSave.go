@@ -5,8 +5,8 @@ import (
 	mpf "export-mountpf-inventory/MPF"
 	"fmt"
 	"image"
-	_ "image/jpeg" // Import JPEG decoder
-	_ "image/png"  // Import PNG decoder
+	_ "image/jpeg"
+	_ "image/png"
 	"io"
 	"log"
 	"net/http"
@@ -59,8 +59,7 @@ func saveImage(imgData []byte, filename string) error {
 	return nil
 }
 
-func downloadAndSaveImage(fileName, url, category string) error {
-	imageURL := url
+func downloadAndSaveImage(fileName, imageURL, category string) error {
 	log.Printf("Downloading image %s", fileName)
 
 	imgData, format, err := downloadImage(imageURL)
